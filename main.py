@@ -14,6 +14,7 @@ def run():
             with st.container():
                 st.header('Upload the Image')
                 st.divider()
+                st.write('')
                 image_file=st.file_uploader('click to upload the card')
             with st.container():
                 st.header('Auto extraction of text from sample images')
