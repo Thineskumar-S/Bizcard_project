@@ -1,6 +1,6 @@
 import streamlit as st
-from interface import *
-
+from extraction import *
+from sql_engine import *
 
 
 
@@ -18,43 +18,46 @@ def run():
                 image_file=st.file_uploader('click to upload the card')
             with st.container():
                 st.header('Auto extraction of text from sample images')
-                autoextract=st.button('Click to Auto extraction',key='autoextract')
+                autoextract=st.button('Click to Auto extract',key='autoextract')
                 if autoextract != None:
-                    result=automated_extraction()
-                st.table(result)
+                    auto_extracted_result=automated_extraction()
+                
 
         with col2:
+            st.header('Extracted Text')
             with st.container():
-                st.header('Extracted Text')
+                st.header('Extracted Text for manually uploaded image')
                 if image_file !=None:    
-                    result1=text_extractor(image_file)
-                    st.write(result1)
+                    extracted_result=text_extractor(image_file)
+                    st.table(extracted_result)
                 st.divider()
             with st.container():
                 st.header('Auto Extracted Text')
-                if result!=None:
-                    st.write(result)
+                if auto_extracted_result!=None:
+                    st.table(auto_extracted_result)
                 st.divider()
 
                 
         with col3:
+            
+            st.header('Upload To Database')
             with st.container():
-                st.header('Upload To Database')
-                st.divider()
-                st.header('Contacts in Database')
-                x=st.button("Click to upload to Database",key='x')
-                if x!=None:    
+                button1=st.button('Click to upload the extracted text from Manually uploaded picture')
+                if button1!=None:
+                    one_img_extracted_data(extracted_result)
                     with st.spinner(text="loading..."):
-                        st.write("loaded to db")
+                            load(auto_extracted_result)
+                    st.success('Done!',icon="✅")
+                st.divider()
+            
+            with st.container():
+                    
+                    st.subheader('Auto extracted text upload')
+                    button2=st.button("Click to upload to Database",key='x')
+                    if button2!=None:    
+                        with st.spinner(text="loading..."):
+                            load(auto_extracted_result)
                         st.success('Done!',icon="✅")
-
-
-
-
-
-
-
-
 
 
 
